@@ -78,9 +78,11 @@ class Board
     set_cells # fill the board with cells
     loop do
       round # play a round
+      break if draw?
       winner_num = find_winner # check if there is a winner
       break if winner_num.eql?('1') || winner_num.eql?('2')
     end
+    announce_draw if draw?
     announce_winner(winner_num) # announce a winner and stop current game session
   end
 
@@ -156,8 +158,10 @@ class Board
     end
     winner_num = get_winner(simple_board) # get a number of a winner
     announce_winner(winner_num) if winner_num.between?(1, 2) # announce a winner if there is any
+    return nil
   end
 
+  # returns a number of a winner if there is any
   def get_winner(simple_board)
     winner_num = 0
     (0...simple_board.length).each do |i| # go through a simplified board
@@ -178,9 +182,21 @@ class Board
     winner_num
   end
 
-  # prints a winner
+  # checks if the game session results into draw
+  def draw?
+    # return true if there is no winner but the game board is full
+    return true if @insides.length == 9 && !find_winner
+  end
+
+  # announces 'draw' and ends the game session
+  def announce_draw
+    puts "It's a draw! Wanna play again?".green
+    ask_for_restart
+  end
+
+  # prints a winner and ends the game session
   def announce_winner(winner_num)
-    puts "#{"Player #{winner_num} has won!".yellow} Wanna play again?"
+    puts "#{"Player #{winner_num} has won!".yellow} Wanna play again?".green
     ask_for_restart
   end
 
