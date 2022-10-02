@@ -62,9 +62,9 @@ class Game
   # start a new game
   def self.start_new_game
     puts "#{'Hello!'.yellow} You're about to play an implementation of Tic-Tac-Toe game by #{'Valdemar_check'.yellow} (e.g. me)"
-    # sleep(3)
+    sleep(2)
     puts "To get started, both players should choose their #{"'cell signs'".yellow}"
-    # sleep(2)
+    sleep(2)
     create_players
     create_board
   end
