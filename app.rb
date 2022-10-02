@@ -14,56 +14,43 @@ module GetChar
   end
 end
 
+# this module is made to just return a winner
 module WinChecker
-  # check for 3 same signs in a row
-  def one_row(simple_board)
-  (0...simple_board.length).step(3).each do |i|
-    row = [simple_board[i], simple_board[i+1], simple_board[i+2]]
-      if row.all? {|cell| cell == 1} || row.all? {|cell| cell == 2}
-        return row.first
-      end
-    end
-    return 0
-  end
-
-  # check for 3 same signs in a column
-  def one_column(simple_board)
-    (0...2).each do |i|
-      column = [simple_board[i], simple_board[i + 3], simple_board[i + 6]]
-      if column.all? {|cell| cell == 1} || column.all? {|cell| cell == 2}
-        return column.first
-      end
-    end
-    return 0
-  end
-
-  # check for 3 same signs in diagonal from left to right
-  def left_to_right(simple_board)
-    diagonal = [simple_board.first, simple_board[4], simple_board.last]
-    if diagonal.all? {|cell| cell == 1} || diagonal.all? {|cell| cell == 2}
-      return diagonal.first
-    end
-    return 0
-  end
-
-  # check for 3 same signs in diagonal from right to left
-  def right_to_left(simple_board)
-    diagonal = [simple_board[2], simple_board[4], simple_board[6]]
-    if diagonal.all? {|cell| cell == 1} || diagonal.all? {|cell| cell == 2}
-      return diagonal.first
-    end
-    return 0
-  end
-
-  # returns a number of a winner if there is any
   def get_winner(simple_board)
-    round_result = [one_row(simple_board), one_column(simple_board), left_to_right(simple_board), right_to_left(simple_board)]
-    round_result = round_result.select {|cell| cell.between?(1, 2)}
-    round_result = 0 if round_result.all? {|cell| cell.zero? }
-    if !simple_board.include?(0) && round_result == 0 # return 'draw' if the board is full and there is still no winner
-      return 'draw'
-    else
-      return round_result[0]
+    round_result = 0
+    # check if there are 3 same signs in a row
+    (0...simple_board.length).step(3).each do |i|
+        row = [simple_board[i], simple_board[i+1], simple_board[i+2]]
+            if row.all? {|cell| cell == 1} || row.all? {|cell| cell == 2}
+                return round_result = row.first
+            end
+        end
+
+    # check if there are 3 same signs in a column
+    (0...2).each do |i|
+        column = [simple_board[i], simple_board[i + 3], simple_board[i + 6]]
+        if column.all? {|cell| cell == 1} || column.all? {|cell| cell == 2}
+            return round_result = column.first
+        end
+      end
+
+    # check if there are 3 same signs in a diagonal (from left to right)
+    diagonal1 = [simple_board.first, simple_board[4], simple_board.last]
+    if diagonal1.all? {|cell| cell == 1} || diagonal1.all? {|cell| cell == 2}
+        return round_result = diagonal1.first
+    end
+
+    # check if there are 3 same signs in a diagonal (from right to left)
+    diagonal2 = [simple_board[2], simple_board[4], simple_board[6]]
+    if diagonal2.all? {|cell| cell == 1} || diagonal2.all? {|cell| cell == 2}
+        return round_result = diagonal2.first
+    end
+
+    # return 'draw' if the board is full and there is still no winner
+    if !simple_board.include?(0)
+        return 'draw'
+    else # else return 0 (which means there is no draw/win situation)
+        return round_result
     end
   end
 end
